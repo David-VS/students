@@ -1,0 +1,14 @@
+.odd{
+    background-color: #FFF;
+}
+.even{
+    background-color: #DDD;
+}
+
+.error{
+    color: #ff0000;
+}
+
+table{
+    width: 100%;
+}

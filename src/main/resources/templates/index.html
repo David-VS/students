@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- thymeleaf used to inject Java in html -->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--  Needed for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>students</title>
+    <!--  Stylesheets -->
+    <link rel="stylesheet" href="https://yarnpkg.com/en/package/normalize.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- bootstrap flavor of datatables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css">
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <!-- needed scripts, both bootstrap & datatables are using jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- datatable setup, pick and choose options
+    https://datatables.net-->
+    <script>
+        $(document).ready(function() {
+            $('#students_table').DataTable({
+                "paging":true,
+                "info":false,
+                "lengthChange":false,
+                "searching":true,
+                "ordering":false
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container" class="container">
+    <h1>Students</h1>
+    <div id="form">
+        <form method="post" th:action="@{~/index}" th:object="${new_student}">
+            <div class="form-group">
+                <label for="firstname">First name</label>
+                <input id="firstname" th:field="*{firstName}" type="text" class="form-control" placeholder="john"/>
+                <br>
+                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" th:class="error"></span>
+            </div>
+            <div class="form-group">
+                <label  for="lastname">Last name</label>
+                <br>
+                <input id="lastname" th:field="*{lastName}" type="text" class="form-control" placeholder="doe"/>
+                <br>
+                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" th:class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date Of Birth</label>
+                <br>
+                <input id="dob" th:field="*{birthdate}" type="date" class="form-control" />
+                <br>
+                <span th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}" th:class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="specialisation">Specialisation</label>
+                <br>
+                <input id="specialisation" th:field="*{specialisation}" type="text" class="form-control" placeholder="Toegepaste informatica"/>
+                <br>
+                <span th:if="${#fields.hasErrors('specialisation')}" th:errors="*{specialisation}" th:class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" th:field="submit" th:text="Submit">
+            </div>
+        </form>
+    </div>
+
+        <div id="students" th:unless="${all.isEmpty()}">
+            <table id="students_table" class="table">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Specialisation</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- for (Student student : StudentenList)
+                ternary operator, vergelijkbaar met een if-else-->
+                    <tr th:each="student : ${all}" th:class="${(studentStat.odd)?'odd':'even'}">
+                        <td><span th:text="${student.firstName}"></span></td>
+                        <td><span th:text="${student.lastName}"></span></td>
+                        <td><span th:text="${student.specialisation}"></span></td>
+                        <td><a class="btn" th:href="@{/details/{id}(id = ${student.id})}">Details</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <div  th:if="${all.isEmpty()}">
+        <h3>Geen studenten, inschrijvingen moeten nog starten of zo.</h3>
+    </div>
+    </div>
+</body>
+</html>
