@@ -15,8 +15,12 @@ import javax.validation.Valid;
 @Controller
 public class IndexController {
 
-    @Autowired
     private StudentDAO repo;
+
+    @Autowired
+    public IndexController(StudentDAO repo) {
+        this.repo = repo;
+    }
 
     @ModelAttribute("all")
     public Iterable<Student> findAll(){

@@ -14,9 +14,12 @@ import java.util.Optional;
 @Controller
 public class DetailsController {
 
-    @Autowired
     StudentDAO repo;
 
+    @Autowired
+    public DetailsController(StudentDAO repo) {
+        this.repo = repo;
+    }
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String showDetailsForID(ModelMap map, @PathVariable(value = "id") int id) {
