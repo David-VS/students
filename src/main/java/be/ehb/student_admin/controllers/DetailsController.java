@@ -28,6 +28,6 @@ public class DetailsController {
             map.addAttribute("student", optional.get());
             return "details";
         }
-        return "redirect:../index";
+        return "redirect:/index";
     }
 }

@@ -1,9 +1,10 @@
-.odd{
-    background-color: #FFF;
+body{
+    background: #DDD !important;
 }
-.even{
-    background-color: #DDD;
-}
+
+tr:nth-child(even) {background: #AAA}
+
+tr:nth-child(odd) {background: #FFF}
 
 .error{
     color: #ff0000;
